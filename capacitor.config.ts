@@ -1,9 +1,9 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'teste-be220',
-  webDir: 'www'
+  appId: 'com.usinaplay.app',
+  appName: 'usinaPlay',
+  webDir: 'build'
 };
 
 export default config;

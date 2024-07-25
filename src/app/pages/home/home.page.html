@@ -1,0 +1,44 @@
+<app-header></app-header>
+
+<ion-content class="w-full h-full bg-black">
+    <main class=" p-10 flex flex-col items-start justify-evenly">
+        <div class="flex items-center justify-center gap-2">
+            <p class="text-2xl mx-2">PERSONAL ONLINE</p>
+            <ion-icon name="add-circle-outline" class="text-orange-500 w-8 h-8"></ion-icon>
+        </div>
+
+        <div class="w-full flex overflow-x-visible">
+            <swiper-container class="w-2/3 flex items-center gap-5 overflow-x-visible">
+                <swiper-slide ><app-card content="NOVO TREINO" icon="add-circle-outline" imgUrl="../../assets/image1.jfif"/></swiper-slide>
+                <swiper-slide ><app-card imgUrl="../../assets/img2.jfif"/></swiper-slide>
+                <swiper-slide ><app-card imgUrl="../../assets/image1.jfif"/></swiper-slide>
+            </swiper-container>
+        </div>
+
+        <div class="flex items-center justify-center gap-2">
+            <p class="text-2xl mx-5">PROGRAMAS</p>
+            <ion-badge class="bg-orange-500 rounded-full flex justify-center items-center p-[3px] text-xs text-white shadow-lg">NOVO</ion-badge>
+        </div>
+
+        <div class="w-full flex overflow-x-visible">
+            <swiper-container class="w-2/3 flex items-center gap-5 overflow-x-visible">
+                <swiper-slide ><app-card imgUrl="../../assets/image1.jfif">
+                    <app-card-ng-content>
+                        <div class="absolute bottom-[20px] left-[20px]">
+                            <p class="w-full text-orange-500 text-sm">continuar treinando</p>
+                            <p class="w-full text-xl">LEVANTAMENTO DE PESO</p>
+                        </div>
+                    </app-card-ng-content>
+                </app-card></swiper-slide>
+                <swiper-slide ><app-card imgUrl="../../assets/img2.jfif">
+                    <app-card-ng-content>
+                        <div class="absolute bottom-[20px] left-[20px]">
+                            <p class="w-full text-xl">YOGA EXPRESSIVO</p>
+                        </div>
+                    </app-card-ng-content>
+                </app-card></swiper-slide>
+                <swiper-slide ><app-card content="Levantamento de peso" imgUrl="../../assets/image1.jfif"/></swiper-slide>
+            </swiper-container>
+        </div>
+    </main>
+</ion-content>

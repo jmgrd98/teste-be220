@@ -1,0 +1,14 @@
+<ion-card class="custom-card w-full h-full max-w-[400px] max-h-[250px] rounded-xl">
+  <img alt="Silhouette of mountains" src={{imgUrl}} class="card-image grayscale" />
+
+  <ion-card-content class="overlay-content flex items-center gap-2">
+    @if (icon) {
+      <ion-icon name={{icon}} class="w-12 h-12 text-white"></ion-icon>
+    }
+    @if (content) {
+      <p class="text-[48px]">{{content}}</p>
+    }
+      <ng-content></ng-content>
+
+  </ion-card-content>
+</ion-card>
