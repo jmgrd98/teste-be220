@@ -1,0 +1,22 @@
+<main class="w-full h-full p-20">
+  <ion-content class="text-white text-center bg-black flex flex-col items-center gap-20">
+    <div class="flex flex-col">
+      <h1 class="text-xl text-white">Usina</h1>
+      <span class="text-orange-500 self-center pl-5">Play</span>
+    </div>
+    <p class="text-5xl">{{ isLogin ? 'Login' : 'Register' }}</p>
+
+    <form [formGroup]="authForm" (ngSubmit)="onSubmit()" class="flex flex-col items-center justify-center w-1/2 mx-auto gap-3 rounded p-3 border-white border m-10">
+      @if (!isLogin) {
+        <ion-input formControlName="name" (ionInput)="onFormFieldChange($event, 'name')" type="text" placeholder="Name" fill="solid"></ion-input>
+      }
+      <ion-input formControlName="email" (ionInput)="onFormFieldChange($event, 'email')" type="email" placeholder="Email" fill="solid"></ion-input>
+      <ion-input formControlName="password" (ionInput)="onFormFieldChange($event, 'password')" type="password" placeholder="Password" fill="solid"></ion-input>
+      <ion-button expand="full" type="submit">{{ isLogin ? 'Login' : 'Register' }}</ion-button>
+    </form>
+
+    <ion-button expand="full" fill="clear" (click)="toggleAuthMode()">
+      {{ isLogin ? 'Need an account? Register' : 'Already have an account? Login' }}
+    </ion-button>
+  </ion-content>
+</main>

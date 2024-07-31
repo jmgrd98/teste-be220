@@ -1,4 +1,5 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
 import { register } from 'swiper/element/bundle';
 
@@ -8,7 +9,11 @@ register();
   selector: 'app-root',
   templateUrl: 'app.component.html',
   standalone: true,
-  imports: [IonApp, IonRouterOutlet],
+  imports: [
+    IonApp,
+    IonRouterOutlet,
+    ReactiveFormsModule
+  ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppComponent {

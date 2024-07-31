@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { AuthService } from './services/auth.service';
 
 export const routes: Routes = [
   {
@@ -6,8 +7,12 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/home/home.page').then((m) => m.HomePage),
   },
   {
+    path: 'auth',
+    loadComponent: () => import('./pages/auth/auth.page').then((m) => m.AuthPage),
+  },
+  {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'auth',
     pathMatch: 'full',
   },
 ];
