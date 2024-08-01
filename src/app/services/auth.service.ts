@@ -1,28 +1,40 @@
-import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { Observable } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { Injectable, inject, signal } from "@angular/core";
+import { Auth, createUserWithEmailAndPassword, updateProfile, user } from '@angular/fire/auth';
+import { Observable, from } from "rxjs";
+import { UsersService } from "./users.service";
+import { User } from "../models/User";
+import { Firestore, doc, getDoc } from '@angular/fire/firestore';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
-export class AuthService implements CanActivate {
+export class AuthService {
+    firebaseAuth = inject(Auth);
+    user$ = user(this.firebaseAuth);
+    currentUserSig = signal<User | null | undefined>(undefined);
+    firestore = inject(Firestore);
 
-  constructor(private afAuth: AngularFireAuth, private router: Router) {}
+    createUser(name: string, email: string, password: string): Observable<any> {
+        return from(createUserWithEmailAndPassword(
+            this.firebaseAuth,
+            email,
+            password
+        ).then(response => {
+            updateProfile(response.user, {
+                displayName: name
+            });
+        }));
+    }
 
-  canActivate(): Observable<boolean> {
-    return this.afAuth.authState.pipe(
-      take(1),
-      map(user => {
-        console.log('Auth guard checked, user:', user); // Debugging log
-        if (user) {
-          return true;
-        } else {
-          // this.router.navigate(['/auth']);
-          return false;
+    async getCurrentUserData(): Promise<User | null> {
+        const currentUser = this.firebaseAuth.currentUser;
+        if (currentUser) {
+            const userDoc = doc(this.firestore, `users/${currentUser.uid}`);
+            const userSnapshot = await getDoc(userDoc);
+            if (userSnapshot.exists()) {
+                return userSnapshot.data() as User;
+            }
         }
-      })
-    );
-  }
+        return null;
+    }
 }

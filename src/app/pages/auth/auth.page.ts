@@ -2,9 +2,11 @@ import { Component, CUSTOM_ELEMENTS_SCHEMA, inject, OnInit } from '@angular/core
 import { ToastController } from '@ionic/angular';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { UsersService } from 'src/app/services/users.service';
 
 @Component({
   selector: 'app-auth',
@@ -25,7 +27,8 @@ export class AuthPage implements OnInit {
     private afAuth: AngularFireAuth,
     private firestore: AngularFirestore,
     private router: Router,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private usersService: UsersService
   ) {
     this.authForm = this.fb.group({
       name: new FormControl(''),
@@ -37,6 +40,7 @@ export class AuthPage implements OnInit {
   }
 
   ngOnInit() {
+    const googleProvider = new GoogleAuthProvider();
 
   }
 
@@ -76,13 +80,13 @@ export class AuthPage implements OnInit {
       this.presentToast('Please enter valid credentials.');
       return;
     }
-
+  
     const { name, email, password } = this.authForm.value;
-
+  
     if (this.isLogin) {
       try {
-        const user = await this.afAuth.signInWithEmailAndPassword(email, password);
-        console.log('Login successful', user);
+        const userCredential = await this.afAuth.signInWithEmailAndPassword(email, password);
+        console.log('Login successful', userCredential);
         window.location.href = '/home';
       } catch (error: any) {
         console.error('Login error', error);
@@ -91,19 +95,24 @@ export class AuthPage implements OnInit {
     } else {
       try {
         const userCredential = await this.afAuth.createUserWithEmailAndPassword(email, password);
+        
+        // Set displayName on the Firebase user
+        await userCredential.user!.updateProfile({ displayName: name, });
+  
         await this.firestore.collection('users').doc(userCredential.user!.uid).set({
-          name,
+          displayName: name,
           email,
           photoUrl: '',
           role: 'branco',
           phoneNumber: ''
         });
+  
         console.log('Registration successful', userCredential);
-        window.location.href ='/home'
+        window.location.href ='/home';
       } catch (error: any) {
         console.error('Registration error', error);
         this.presentToast(error.message);
       }
     }
-  }
+  }  
 }
