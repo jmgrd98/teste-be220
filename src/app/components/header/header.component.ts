@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonIcon, IonBadge, IonAvatar } from '@ionic/angular/standalone';
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonIcon, IonBadge, IonAvatar, IonPopover } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { menuOutline, notifications, body, trophy } from 'ionicons/icons';
 import { User } from 'src/app/models/User';
@@ -9,14 +9,12 @@ import { CommonModule } from '@angular/common';
 import { UsersService } from 'src/app/services/users.service';
 import { getAuth } from '@angular/fire/auth';
 import { UploadImageService } from 'src/app/services/upload-image.service';
-import { SidebarComponent } from '../sidebar/sidebar.component';
 
 @Component({
   selector: 'app-header',
   standalone: true,
   templateUrl: './header.component.html',
   imports: [
-    SidebarComponent,
     CommonModule,
     IonAvatar,
     IonBadge,
@@ -24,7 +22,8 @@ import { SidebarComponent } from '../sidebar/sidebar.component';
     IonHeader,
     IonToolbar,
     IonTitle,
-    IonContent
+    IonContent,
+    IonPopover
   ],
 })
 export class HeaderComponent implements OnInit, OnDestroy {
@@ -90,7 +89,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Example function to update user profile
   updateUserProfile() {
     if (this.currentUser && this.currentUser.id && this.avatarUrl !== null) {
       this.usersService.updateUser(this.currentUser.id, { photoUrl: this.avatarUrl })
@@ -109,6 +107,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     if (this.fileInput) {
       this.fileInput.nativeElement.click();
     }
+  }
+
+  onProfileClick() {
+    window.location.href = '/profile'
   }
 
   ngOnDestroy() {

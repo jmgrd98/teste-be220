@@ -103,7 +103,7 @@ export class AuthPage implements OnInit {
           displayName: name,
           email,
           photoUrl: '',
-          role: 'branco',
+          role: 'white',
           phoneNumber: ''
         });
   
