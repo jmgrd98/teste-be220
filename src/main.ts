@@ -10,6 +10,7 @@ import { getFirestore } from 'firebase/firestore';
 import { provideHttpClient } from '@angular/common/http';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
+import { provideStorage, getStorage } from '@angular/fire/storage';
 
 const firebaseConfig = {
   apiKey: API_KEY,
@@ -29,6 +30,7 @@ bootstrapApplication(AppComponent, {
     provideRouter(routes, withPreloading(PreloadAllModules)),
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
     provideFirestore(() => getFirestore()),
+    provideStorage(() => getStorage()),
     provideAuth(() => getAuth()),
     { provide: FIREBASE_OPTIONS, useValue: environment.production ? firebaseConfig : firebaseConfig }
   ],

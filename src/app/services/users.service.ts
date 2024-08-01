@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, collectionData, doc, getDoc } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, doc, getDoc, updateDoc } from '@angular/fire/firestore';
 import { Auth, getAuth, User as FirebaseUser } from 'firebase/auth';
 import { User } from '../models/User';
 import { Observable, from } from 'rxjs';
@@ -42,5 +42,10 @@ export class UsersService {
     } else {
       return null;
     }
+  }
+
+  async updateUser(uid: string, update: Partial<User>): Promise<void> {
+    const userDoc = doc(this.firestore, `users/${uid}`);
+    await updateDoc(userDoc, update);
   }
 }

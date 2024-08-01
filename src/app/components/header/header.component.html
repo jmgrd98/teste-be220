@@ -1,6 +1,9 @@
 <ion-header class="w-full h-full max-h-[300px] gap-5 bg-[#202020] flex flex-col justify-evenly items-center px-[20px] py-[10px] rounded-b-[50px]">
   <div class="w-full flex justify-between items-center mb-2">
-    <ion-icon name="menu-outline" size="large" class="text-white"></ion-icon>
+    <ion-icon (click)="openSidebar()" name="menu-outline" size="large" class="text-white"></ion-icon>
+    @if (isSidebarOpen) {
+      <app-sidebar></app-sidebar>
+    }
     <div class="flex flex-col">
       <h1 class="text-xl text-white">Usina</h1>
       <span class="text-orange-500 self-end">Play</span>
@@ -12,12 +15,13 @@
   </div>
 
   <div class="self-start flex items-center justify-start gap-5 px-5">
-    <ion-avatar>
-      <img alt="Silhouette of a person's head" src="https://avatar.iran.liara.run/public/18" />
+    <input #fileInput type="file" accept="image/*" (change)="onFileSelected($event)" style="display: none;" />
+    <ion-avatar (click)="onAvatarClick()">
+      <img [src]="currentUser?.photoUrl || 'https://avatar.iran.liara.run/public/18'" alt="Silhouette of a person's head" />
     </ion-avatar>
     <div class="flex flex-col gap-1 text-xl">
       <p class="text-white">{{ currentUser?.displayName }}</p>
-      <p [ngClass]="{}" class="text-lg text-purple-500">
+      <p [ngClass]="(currentUser?.role == 'branco') ? 'text-white' : 'text-purple-500'">
         Nível {{ currentUser?.role?.charAt(0)!.toUpperCase() + currentUser?.role?.slice(1) }}
       </p>
     </div>

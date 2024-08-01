@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, OnDestroy } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonIcon, IonBadge, IonAvatar } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { menuOutline, notifications, body, trophy } from 'ionicons/icons';
@@ -7,13 +7,16 @@ import { AuthService } from 'src/app/services/auth.service';
 import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { UsersService } from 'src/app/services/users.service';
-import { getAuth, user } from '@angular/fire/auth';
+import { getAuth } from '@angular/fire/auth';
+import { UploadImageService } from 'src/app/services/upload-image.service';
+import { SidebarComponent } from '../sidebar/sidebar.component';
 
 @Component({
   selector: 'app-header',
   standalone: true,
   templateUrl: './header.component.html',
   imports: [
+    SidebarComponent,
     CommonModule,
     IonAvatar,
     IonBadge,
@@ -29,18 +32,23 @@ export class HeaderComponent implements OnInit, OnDestroy {
   auth: any = getAuth();
   users: User[] = [];
   currentUser!: any;
+  selectedFile: any;
+  isSidebarOpen: boolean = false;
   private authStateSubscription: Subscription | null = null;
   private userSubscription: Subscription | null = null;
+  avatarUrl: string | null = null;
+
+  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
 
   constructor(
-    private usersService: UsersService
+    private usersService: UsersService,
+    private uploadImageService: UploadImageService
   ) {
     addIcons({ menuOutline, notifications, body, trophy });
   }
 
   async ngOnInit() {
     this.usersService.getUsers().subscribe((users) => {
-      console.log('USERS', users);
       this.users = users;
     });
 
@@ -48,11 +56,59 @@ export class HeaderComponent implements OnInit, OnDestroy {
       if (firebaseUser) {
         this.currentUser = firebaseUser;
         this.userSubscription = this.usersService.findUserByUid(firebaseUser.uid).subscribe((user) => {
-          console.log('FINDED USER', user);
           this.currentUser = user;
+          console.log(this.currentUser);
+          if (this.currentUser.avatarUrl) {
+            this.avatarUrl = this.currentUser.avatarUrl;
+          }
         });
       }
     });
+  }
+
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
+    console.log(this.selectedFile);
+    this.uploadFile();
+  }
+
+  uploadFile() {
+    if (this.selectedFile) {
+      const userId = this.currentUser.id;
+      this.uploadImageService.uploadImage(this.selectedFile, userId)
+        .then((downloadURL: string) => {
+          console.log('File uploaded successfully. URL:', downloadURL);
+          this.avatarUrl = downloadURL;
+          this.currentUser.avatarUrl = downloadURL;
+          this.updateUserProfile();
+        })
+        .catch((error: any) => {
+          console.error('Error uploading file:', error);
+        });
+    } else {
+      console.error('No file selected');
+    }
+  }
+
+  // Example function to update user profile
+  updateUserProfile() {
+    if (this.currentUser && this.currentUser.id && this.avatarUrl !== null) {
+      this.usersService.updateUser(this.currentUser.id, { photoUrl: this.avatarUrl })
+        .then(() => console.log('User profile updated'))
+        .catch((error: any) => console.error('Error updating profile', error));
+    }
+  }
+
+
+  openSidebar() {
+    this.isSidebarOpen = !this.isSidebarOpen;
+    console.log(this.isSidebarOpen);
+  }
+
+  onAvatarClick() {
+    if (this.fileInput) {
+      this.fileInput.nativeElement.click();
+    }
   }
 
   ngOnDestroy() {
