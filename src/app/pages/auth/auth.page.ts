@@ -95,11 +95,11 @@ export class AuthPage implements OnInit {
           name,
           email,
           photoUrl: '',
-          role: 'user',
+          role: 'branco',
           phoneNumber: ''
         });
         console.log('Registration successful', userCredential);
-        this.router.navigate(['/home']);
+        window.location.href ='/home'
       } catch (error: any) {
         console.error('Registration error', error);
         this.presentToast(error.message);
