@@ -1,5 +1,19 @@
 import { Component, inject, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonIcon, IonBadge, IonAvatar, IonPopover } from '@ionic/angular/standalone';
+import { 
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonIcon,
+  IonBadge,
+  IonAvatar,
+  IonPopover,
+  IonModal,
+  IonButtons,
+  IonButton,
+  IonItem,
+  IonInput
+} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { menuOutline, notifications, body, trophy } from 'ionicons/icons';
 import { User } from 'src/app/models/User';
@@ -9,6 +23,8 @@ import { CommonModule } from '@angular/common';
 import { UsersService } from 'src/app/services/users.service';
 import { getAuth } from '@angular/fire/auth';
 import { UploadImageService } from 'src/app/services/upload-image.service';
+import { MenuModalComponent } from "../menu-modal/menu-modal.component";
+import { ModalObjectivesComponent } from "../modal-objectives/modal-objectives.component";
 
 @Component({
   selector: 'app-header',
@@ -23,8 +39,15 @@ import { UploadImageService } from 'src/app/services/upload-image.service';
     IonToolbar,
     IonTitle,
     IonContent,
-    IonPopover
-  ],
+    IonPopover,
+    IonModal,
+    IonButtons,
+    IonButton,
+    IonItem,
+    IonInput,
+    MenuModalComponent,
+    ModalObjectivesComponent
+],
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   authService = inject(AuthService);
@@ -32,7 +55,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   users: User[] = [];
   currentUser!: any;
   selectedFile: any;
-  isSidebarOpen: boolean = false;
   private authStateSubscription: Subscription | null = null;
   private userSubscription: Subscription | null = null;
   avatarUrl: string | null = null;
@@ -67,7 +89,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
-    console.log(this.selectedFile);
     this.uploadFile();
   }
 
@@ -97,12 +118,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-
-  openSidebar() {
-    this.isSidebarOpen = !this.isSidebarOpen;
-    console.log(this.isSidebarOpen);
-  }
-
   onAvatarClick() {
     if (this.fileInput) {
       this.fileInput.nativeElement.click();
@@ -120,5 +135,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
     if (this.userSubscription) {
       this.userSubscription.unsubscribe();
     }
+  }
+
+  onObjectivesClick() {
+
+  }
+
+  goToHome(){
+    window.location.href = '/home'
   }
 }

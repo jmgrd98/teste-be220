@@ -18,5 +18,22 @@
     <ion-button  expand="full" fill="clear" (click)="toggleAuthMode()">
       {{ isLogin ? 'Need an account? Register' : 'Already have an account? Login' }}
     </ion-button>
+
+
+    <div class="flex items-center justify-center gap-10">
+      <ion-img
+        (click)="signInWithGoogle()"
+        src="../../../assets/google.png"
+        alt="Enter with Google"
+        class="w-10 h-10 cursor-pointer"
+      />
+
+      <!-- <ion-img
+        (click)="signInWithFacebook()"
+        src="../../../assets/facebook.png"
+        alt="Enter with Google"
+        class="w-10 h-10 cursor-pointer"
+      /> -->
+    </div>
   </ion-content>
 </main>

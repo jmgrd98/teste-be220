@@ -2,7 +2,7 @@ import { Component, CUSTOM_ELEMENTS_SCHEMA, inject, OnInit } from '@angular/core
 import { ToastController } from '@ionic/angular';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
@@ -41,7 +41,7 @@ export class AuthPage implements OnInit {
 
   ngOnInit() {
     const googleProvider = new GoogleAuthProvider();
-
+    const facebookProvider = new FacebookAuthProvider();
   }
 
   async presentToast(message: string) {
@@ -115,4 +115,26 @@ export class AuthPage implements OnInit {
       }
     }
   }  
+
+  async signInWithGoogle() {
+    try {
+        const response = await this.authService.signInWithGoogle();
+        console.log('Google Sign-In successful', response);
+        window.location.href = '/home';
+    } catch (error: any) {
+        console.error('Google Sign-In error', error);
+        this.presentToast(error.message);
+    }
+  }
+
+  async signInWithFacebook() {
+    try {
+        const response = await this.authService.signInWithFacebook();
+        console.log('Facebook Sign-In successful', response);
+        window.location.href = '/home';
+    } catch (error: any) {
+        console.error('Facebook Sign-In error', error);
+        this.presentToast(error.message);
+    }
+  }
 }

@@ -1,14 +1,14 @@
 <ion-header class="w-full h-full max-h-[300px] gap-5 bg-[#202020] flex flex-col justify-evenly items-center px-[20px] py-[10px] rounded-b-[50px]">
   <div class="w-full flex justify-between items-center mb-2">
-    <ion-icon id="click-trigger" (click)="openSidebar()" name="menu-outline" size="large" class="text-white"></ion-icon>
-    <ion-popover trigger="click-trigger" triggerAction="click">
+    <ion-icon id="open-modal"  name="menu-outline" size="large" class="text-white cursor-pointer"></ion-icon>
+    <ion-popover trigger="menu-modal" triggerAction="click">
       <ng-template>
         <ion-content class="ion-padding">
           <p class="cursor-pointer hover:bg-white hover:text-black hover:p-1 hover:rounded" (click)="onProfileClick()">Meu perfil</p>
         </ion-content>
       </ng-template>
     </ion-popover>
-    <div class="flex flex-col">
+    <div class="flex flex-col cursor-pointer" (click)="goToHome()">
       <h1 class="text-xl text-white">Usina</h1>
       <span class="text-orange-500 self-end">Play</span>
     </div>
@@ -21,10 +21,10 @@
   <div class="self-start flex items-center justify-start gap-5 px-5 cursor-pointer">
     <input #fileInput type="file" accept="image/*" (change)="onFileSelected($event)" style="display: none;" />
     <ion-avatar (click)="onAvatarClick()">
-      <img [src]="currentUser?.photoUrl || 'https://avatar.iran.liara.run/public/18'" alt="Silhouette of a person's head" />
+      <img [src]="currentUser?.photoUrl || 'https://avatar.iran.liara.run/public/18'" alt="Profile picture" />
     </ion-avatar>
     <div class="flex flex-col gap-1 text-xl">
-      <p class="text-white">{{ currentUser?.displayName }}</p>
+      <p class="text-white">{{ currentUser?.displayName || currentUser?.name }}</p>
       <p [ngClass]="(currentUser?.role == 'white') ? 'text-white' : 'text-purple-500' " class="text-md">
         Nível {{ currentUser?.role?.charAt(0)!.toUpperCase() + currentUser?.role?.slice(1) }}
       </p>
@@ -38,11 +38,13 @@
       </div>
       <p class="text-orange-500 text-xs">MEU CORPO</p>
     </div>
-    <div class="w-1/2 flex items-center gap-2">
+    <div trigger="open-objectives" class="w-1/2 flex items-center gap-2">
       <div class="flex items-center justify-center border border-orange-500 w-10 h-10 rounded-full">
         <ion-icon name="trophy" class="text-[#F07D07] w-4 h-4"></ion-icon>
       </div>
       <p class="text-orange-500 text-xs">OBJETIVOS E CONQUISTAS</p>
     </div>
   </div>
+  <app-menu-modal></app-menu-modal>
+  <app-modal-objectives></app-modal-objectives>
 </ion-header>
