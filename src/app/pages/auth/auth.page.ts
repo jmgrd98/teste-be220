@@ -104,7 +104,8 @@ export class AuthPage implements OnInit {
           email,
           photoUrl: '',
           role: 'white',
-          phoneNumber: ''
+          phoneNumber: '',
+          objectives: []
         });
   
         console.log('Registration successful', userCredential);

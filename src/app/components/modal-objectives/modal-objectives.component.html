@@ -11,17 +11,27 @@
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
-    <ion-content class="ion-padding">
-      <ion-button (click)="addObjective()" class="my-2">Adicionar objetivos</ion-button>
+    <ion-content class="ion-padding flex flex-col items-center gap-5">
+      <form [formGroup]="objectiveForm" (ngSubmit)="addObjective()">
+        <ion-item>
+          <ion-label position="stacked">Nome do objetivo</ion-label>
+          <ion-input type="text" formControlName="name"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Descrição do objetivo</ion-label>
+          <ion-input type="text" formControlName="description"></ion-input>
+        </ion-item>
+        <ion-button type="submit" expand="block" class="my-2" [disabled]="objectiveForm.invalid">Adicionar objetivo</ion-button>
+      </form>
       <ion-accordion-group>
         @for (objective of objectives; track objective) {
-          <ion-accordion value="{objective.id}">
+          <ion-accordion *ngFor="let objective of objectives; trackBy: trackById" [value]="objective.id">
             <ion-item slot="header" color="light">
-              <ion-label>{{objective?.name}}</ion-label>
+              <ion-label>{{ objective.name }}</ion-label>
             </ion-item>
-            <div class="ion-padding" slot="content">{{objective?.description}}</div>
+            <div class="ion-padding" slot="content">{{ objective.description }}</div>
           </ion-accordion>
-        }
+        } 
       </ion-accordion-group>
     </ion-content>
   </ng-template>

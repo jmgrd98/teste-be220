@@ -65,8 +65,9 @@ export class AuthService {
             name: user.displayName || '',
             email: user.email || '',
             photoUrl: user.photoURL || '',
-            role: 'user', // default role
-            phoneNumber: user.phoneNumber || ''
+            role: 'white',
+            phoneNumber: user.phoneNumber || '',
+            objectives: []
         };
     
         // Remove any undefined properties
@@ -87,6 +88,7 @@ export class AuthService {
         ).then(response => {
             return updateProfile(response.user, {
                 displayName: name
+
             });
         }));
     }

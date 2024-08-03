@@ -153,7 +153,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   logout() {
     this.authService.logout().then(() => {
-      window.location.href = '/login';
+      window.location.href = '/auth';
     }).catch((error: any) => {
       console.error('Error during logout:', error);
     });

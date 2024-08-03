@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Firestore, collection, collectionData, doc, getDoc, updateDoc } from '@angular/fire/firestore';
 import { Auth, getAuth, User as FirebaseUser } from 'firebase/auth';
 import { User } from '../models/User';
+import { Objective } from '../models/Objective';
 import { Observable, from } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -47,5 +48,15 @@ export class UsersService {
   async updateUser(uid: string, update: Partial<User>): Promise<void> {
     const userDoc = doc(this.firestore, `users/${uid}`);
     await updateDoc(userDoc, update);
+  }
+
+  async addObjectiveToUser(uid: string, objective: Objective): Promise<void> {
+    const userDoc = doc(this.firestore, `users/${uid}`);
+    const userSnapshot = await getDoc(userDoc);
+    if (userSnapshot.exists()) {
+      const user = userSnapshot.data() as User;
+      const updatedObjectives = user.objectives ? [...user.objectives, objective] : [objective];
+      await updateDoc(userDoc, { objectives: updatedObjectives });
+    }
   }
 }
