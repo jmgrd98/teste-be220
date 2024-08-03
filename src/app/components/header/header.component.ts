@@ -47,7 +47,7 @@ import { ModalObjectivesComponent } from "../modal-objectives/modal-objectives.c
     IonInput,
     MenuModalComponent,
     ModalObjectivesComponent
-],
+  ],
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   authService = inject(AuthService);
@@ -58,6 +58,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private authStateSubscription: Subscription | null = null;
   private userSubscription: Subscription | null = null;
   avatarUrl: string | null = null;
+
+  isObjectivesModalOpen = false; // Add this line
 
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
 
@@ -138,10 +140,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onObjectivesClick() {
+    this.isObjectivesModalOpen = true;
+  }
 
+  closeObjectivesModal() {
+    this.isObjectivesModalOpen = false;
   }
 
   goToHome(){
     window.location.href = '/home'
+  }
+
+  logout() {
+    this.authService.logout().then(() => {
+      window.location.href = '/login';
+    }).catch((error: any) => {
+      console.error('Error during logout:', error);
+    });
   }
 }

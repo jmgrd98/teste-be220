@@ -1,10 +1,10 @@
 <ion-header class="w-full h-full max-h-[300px] gap-5 bg-[#202020] flex flex-col justify-evenly items-center px-[20px] py-[10px] rounded-b-[50px]">
   <div class="w-full flex justify-between items-center mb-2">
-    <ion-icon id="open-modal"  name="menu-outline" size="large" class="text-white cursor-pointer"></ion-icon>
+    <ion-icon id="menu-modal" name="menu-outline" size="large" class="text-white cursor-pointer"></ion-icon>
     <ion-popover trigger="menu-modal" triggerAction="click">
       <ng-template>
         <ion-content class="ion-padding">
-          <p class="cursor-pointer hover:bg-white hover:text-black hover:p-1 hover:rounded" (click)="onProfileClick()">Meu perfil</p>
+          <p class="cursor-pointer hover:bg-white hover:text-black hover:p-1 hover:rounded" (click)="logout()">Sair</p>
         </ion-content>
       </ng-template>
     </ion-popover>
@@ -38,13 +38,14 @@
       </div>
       <p class="text-orange-500 text-xs">MEU CORPO</p>
     </div>
-    <div trigger="open-objectives" class="w-1/2 flex items-center gap-2">
+    <div class="w-1/2 flex items-center gap-2 cursor-pointer" (click)="onObjectivesClick()">
       <div class="flex items-center justify-center border border-orange-500 w-10 h-10 rounded-full">
         <ion-icon name="trophy" class="text-[#F07D07] w-4 h-4"></ion-icon>
       </div>
       <p class="text-orange-500 text-xs">OBJETIVOS E CONQUISTAS</p>
     </div>
   </div>
+
   <app-menu-modal></app-menu-modal>
-  <app-modal-objectives></app-modal-objectives>
+  <app-modal-objectives [isOpen]="isObjectivesModalOpen" (close)="closeObjectivesModal()"></app-modal-objectives>
 </ion-header>

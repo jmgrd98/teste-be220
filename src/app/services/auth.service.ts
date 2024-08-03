@@ -102,4 +102,13 @@ export class AuthService {
         }
         return null;
     }
+
+    async logout() {
+        try {
+            await this.afAuth.signOut();
+            window.location.href = '/auth';
+        } catch (error) {
+            console.error("Logout Error: ", error);
+        }
+    }
 }
